@@ -1,4 +1,4 @@
-import discord
+import discord, asyncio
 from discord.ext import commands
 
 bot = commands.Bot(command_prefix='z', intents=discord.Intents.all())
@@ -76,3 +76,4 @@ async def serverinfo (ctx):
   embed.add_field(name="Roles: ", value='.'.join([r.mention for r in ctx.guild.roles]), inline=False)
   await ctx.send(embed=embed)
 
+bot.run(token)
