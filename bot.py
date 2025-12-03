@@ -7,6 +7,7 @@ bot = commands.Bot(command_prefix='z', intents=discord.Intents.all())
 async def on_ready():
   print(f"[ + ] Logged in as: {bot.user}")
   print(f"[ + ] ID: {bot.user.id}")
+  await bot.change_presence(status=discord.Status.idle, activity=discord.ActivityType.watching("⚖️")
   
 class Clean(discord.ui.View):
   def __init__(self, ctx):
@@ -17,17 +18,18 @@ class Clean(discord.ui.View):
   @discord.ui.button(label="Confirm", style=discord.ButtonStyle.danger)
   async def confirm (self, i: discord.Interaction, b: discord.ui.Button):
     if i.user.id != self.ctx.author.id:
-      return await i.response.send_message(embed=discord.Embed(description=f"{i.user.mention}: You cannot respond to this interaction!", color=0x000001, ephemeral=True)
-    
-    self.value.ctx = True
-    self.stop()
+      return await i.response.send_message(embed=discord.Embed(description=f"{i.user.mention}: You cannot respond to this interaction!", color=0x000001, ephemeral=True))
+    else:
+      self.value = True
+      await i.response.edit_message(embed
+      self.stop()
   
   @discord.ui.button(label="Cancel", style=discord.ButtonStyle.secondary)
   async def cancel(self, i: discord.Interaction, b: discord.ui.Button):
     if i.user.id != self.ctx.author.id:
       return await i.response.send_message(embed=discord.Embed(description=f"{i.user.mention}: You cannot respond to this interaction!", color=0x000001, ephemeral=True)
     else:
-      self.value.ctx = False
+      self.value = False
     await i.response.send_message(embed=discord.Embed(description=f"{self.ctx.author.mention}: 👍: Cancelled.", color=0xA4C4FF, ephemeral=True)
       self.stop()
                                                    
@@ -36,10 +38,11 @@ class Clean(discord.ui.View):
 async def clean (ctx):
   c = Clean(ctx)
   try:
-    await ctx.send(embed=discord.Embed(description=f"{ctx.author.mention}: Are you sure? This will delete all emojis, stickers and roles from this server!", color=0xA4C4FF, view=c)
+    await ctx.reply(embed=discord.Embed(description=f"{ctx.author.mention}: Are you sure? This will delete all emojis, stickers and roles from this server!", color=0xA4C4FF, view=c)
     await c.wait()
     
     if c.value is True:
+      await ctx.message.add_reaction("👍")
       for emoji in ctx.guild.emojis:
         try:
           await emoji.delete()
@@ -56,7 +59,7 @@ async def clean (ctx):
         try:
           await member.edit(nick=None)
           await asyncio.sleep(0.1)
-          except:
+        except:
             pass
       for role in ctx.guild.roles:
         try:
