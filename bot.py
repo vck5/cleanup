@@ -7,7 +7,7 @@ bot = commands.Bot(command_prefix='z', intents=discord.Intents.all())
 async def on_ready():
   print(f"[ + ] Logged in as: {bot.user}")
   print(f"[ + ] ID: {bot.user.id}")
-  await bot.change_presence(status=discord.Status.idle, activity=discord.Activity(Type=discord.ActivityType.watching, name="⚖️"))
+  await bot.change_presence(status=discord.Status.idle, activity=discord.Activity(type=discord.ActivityType.watching, name="⚖️"))
   
 class Clean(discord.ui.View):
   def __init__(self, ctx):
@@ -21,7 +21,7 @@ class Clean(discord.ui.View):
       return await i.response.send_message(embed=discord.Embed(description=f"{i.user.mention}: You cannot respond to this interaction!", color=0x000001, ephemeral=True))
     else:
       self.value = True
-      await i.response.edit_message(embed=discord.Embed(description=f"👍: {self.ctx.author.mention}", color=discord.Color.random(),))
+      await i.response.edit_message(embed=discord.Embed(description=f"👍: {self.ctx.author.mention}", color=discord.Color.random()), view=None)
       self.stop()
   
   @discord.ui.button(label="Cancel", style=discord.ButtonStyle.secondary)
@@ -30,7 +30,7 @@ class Clean(discord.ui.View):
       return await i.response.send_message(embed=discord.Embed(description=f"{i.user.mention}: You cannot respond to this interaction!", color=0x000001, ephemeral=True))
     else:
       self.value = False
-      await i.response.send_message(embed=discord.Embed(description=f"{self.ctx.author.mention}: 👍: Cancelled.", color=0xA4C4FF, ephemeral=True))
+      await i.response.edit_message(embed=discord.Embed(description=f"{self.ctx.author.mention}: 👍: Cancelled.", color=0xA4C4FF), view=None)
       self.stop()
                                                    
 @bot.command()
@@ -38,7 +38,7 @@ class Clean(discord.ui.View):
 async def clean (ctx):
   c = Clean(ctx)
   try:
-    await ctx.reply(embed=discord.Embed(description=f"{ctx.author.mention}: Are you sure? This will delete all emojis, stickers and roles from this server!", color=0xA4C4FF, view=c))
+    await ctx.reply(embed=discord.Embed(description=f"{ctx.author.mention}: Are you sure? This will delete all emojis, stickers and roles from this server!", color=0xA4C4FF), view=c)
     await c.wait()
     
     if c.value is True:
@@ -84,4 +84,3 @@ async def serverinfo (ctx):
   await ctx.send(embed=embed)
 
 bot.run(token)
-      
