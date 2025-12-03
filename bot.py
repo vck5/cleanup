@@ -72,7 +72,7 @@ async def serverinfo (ctx):
   
   embed = discord.Embed(description=ctx.guild.name, color=0xA4C4FF)
   if ctx.guild.icon:
-    embed.set_thumbnail(url=ctx.guild.icon_url)
+    embed.set_thumbnail(url=ctx.guild.icon.url)
   embed.add_field(name="Owner: ", value=ctx.guild.owner, inline=True)
   embed.add_field(name="Boosts: ", value=ctx.guild
   .premium_subscription_count, inline=True)
