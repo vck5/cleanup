@@ -7,7 +7,7 @@ bot = commands.Bot(command_prefix='z', intents=discord.Intents.all())
 async def on_ready():
   print(f"[ + ] Logged in as: {bot.user}")
   print(f"[ + ] ID: {bot.user.id}")
-  await bot.change_presence(status=discord.Status.idle, activity=discord.ActivityType.watching("⚖️")
+  await bot.change_presence(status=discord.Status.idle, activity=discord.ActivityType.watching("⚖️"))
   
 class Clean(discord.ui.View):
   def __init__(self, ctx):
@@ -21,7 +21,7 @@ class Clean(discord.ui.View):
       return await i.response.send_message(embed=discord.Embed(description=f"{i.user.mention}: You cannot respond to this interaction!", color=0x000001, ephemeral=True))
     else:
       self.value = True
-      await i.response.edit_message(embed
+      await i.response.edit_message(embed=discord.Embed(description=f"👍 {self.ctx.author.mention}", color=discord.Color.random(), ephemeral=True))
       self.stop()
   
   @discord.ui.button(label="Cancel", style=discord.ButtonStyle.secondary)
@@ -77,8 +77,7 @@ async def serverinfo (ctx):
   if ctx.guild.icon:
     embed.set_thumbnail(url=ctx.guild.icon.url)
   embed.add_field(name="Owner: ", value=ctx.guild.owner, inline=True)
-  embed.add_field(name="Boosts: ", value=ctx.guild
-  .premium_subscription_count, inline=True)
+  embed.add_field(name="Boosts: ", value=ctx.guild.premium_subscription_count, inline=True)
   embed.add_field(name="Boost Tier: ", value=str(ctx.guild.premium_tier), inline=True)
   embed.add_field(name="Channels: ", value=f"txt: {len(ctx.guild.text_channels)} | voice: {len(ctx.guild.voice_channels)}", inline=False)
   embed.add_field(name="Roles: ", value='\n'.join([r.mention for r in ctx.guild.roles]), inline=False)
