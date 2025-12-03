@@ -3,6 +3,11 @@ from discord.ext import commands
 
 bot = commands.Bot(command_prefix='z', intents=discord.Intents.all())
 
+@bot.event
+async def on_ready():
+  print(f"[ + ] Logged in as: {bot.user}")
+  print(f"[ + ] ID: {bot.user.id}")
+  
 class Clean(discord.ui.View):
   def __init__(self, ctx):
     super().__init__ (timeout=30.0)
@@ -12,19 +17,19 @@ class Clean(discord.ui.View):
   @discord.ui.button(label="Confirm", style=discord.ButtonStyle.danger)
   async def confirm (self, i: discord.Interaction, b: discord.ui.Button):
     if i.user.id != self.ctx.author.id:
-      return await interaction.response.send_message(embed=discord.Embed(description=f"{i.user.mention}: You cannot respond to this interaction!", color=0x000001, ephemeral=True)
+      return await i.response.send_message(embed=discord.Embed(description=f"{i.user.mention}: You cannot respond to this interaction!", color=0x000001, ephemeral=True)
     
     self.value.ctx = True
     self.stop()
-
-@discord.ui.button(label="Cancel", style=discord.ButtonStyle.secondary)
-async def cancel(self, i: discord.Interaction, b: discord.ui.Button):
-  if i.user.id != self.ctx.author.id:
-    return await interaction.response.send_message(embed=discord.Embed(description=f"{i.user.mention}: You cannot respond to this interaction!", color=0x000001, ephemeral=True)
-  else:
+  
+  @discord.ui.button(label="Cancel", style=discord.ButtonStyle.secondary)
+  async def cancel(self, i: discord.Interaction, b: discord.ui.Button):
+    if i.user.id != self.ctx.author.id:
+      return await i.response.send_message(embed=discord.Embed(description=f"{i.user.mention}: You cannot respond to this interaction!", color=0x000001, ephemeral=True)
+    else:
       self.value.ctx = False
-    await interaction.response.send_message(embed=discord.Embed(description="{self.ctx.author.mention}: 👍: Cancelled.", color=0xA4C4FF, ephemeral=True)
-  self.stop()
+    await i.response.send_message(embed=discord.Embed(description=f"{self.ctx.author.mention}: 👍: Cancelled.", color=0xA4C4FF, ephemeral=True)
+      self.stop()
                                                    
 @bot.command()
 @commands.has_permissions(administrator=True)
@@ -73,7 +78,7 @@ async def serverinfo (ctx):
   .premium_subscription_count, inline=True)
   embed.add_field(name="Boost Tier: ", value=str(ctx.guild.premium_tier), inline=True)
   embed.add_field(name="Channels: ", value=f"txt: {len(ctx.guild.text_channels)} | voice: {len(ctx.guild.voice_channels)}", inline=False)
-  embed.add_field(name="Roles: ", value='.'.join([r.mention for r in ctx.guild.roles]), inline=False)
+  embed.add_field(name="Roles: ", value='\n'.join([r.mention for r in ctx.guild.roles]), inline=False)
   await ctx.send(embed=embed)
 
 bot.run(token)
