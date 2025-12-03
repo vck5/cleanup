@@ -8,32 +8,33 @@ class Clean(discord.ui.View):
     super().__init__ (timeout=30.0)
     self.ctx = ctx
     self.view = None
-
-@discord.ui.button(label="Confirm", style=discord.ButtonStyle.danger)
-async def confirm (self, i: discord.Interaction, b: discord.ui.Button):
-  if i.user.id != self.ctx.author.id:
-    return await interaction.response.send_message(embed=discord.Embed(description=f"{i.user.mention}: You cannot respond to this interaction!", color=0x000001, ephemeral=True)
-
-  self.view.ctx = True
-  self.stop()
+    
+  @discord.ui.button(label="Confirm", style=discord.ButtonStyle.danger)
+  async def confirm (self, i: discord.Interaction, b: discord.ui.Button):
+    if i.user.id != self.ctx.author.id:
+      return await interaction.response.send_message(embed=discord.Embed(description=f"{i.user.mention}: You cannot respond to this interaction!", color=0x000001, ephemeral=True)
+    
+    self.value.ctx = True
+    self.stop()
 
 @discord.ui.button(label="Cancel", style=discord.ButtonStyle.secondary)
 async def cancel(self, i: discord.Interaction, b: discord.ui.Button):
   if i.user.id != self.ctx.author.id:
     return await interaction.response.send_message(embed=discord.Embed(description=f"{i.user.mention}: You cannot respond to this interaction!", color=0x000001, ephemeral=True)
   else:
-      self.view.ctx = False
+      self.value.ctx = False
     await interaction.response.send_message(embed=discord.Embed(description="{self.ctx.author.mention}: 👍: Cancelled.", color=0xA4C4FF, ephemeral=True)
   self.stop()
                                                    
 @bot.command()
 @commands.has_permissions(administrator=True)
 async def clean (ctx):
+  c = Clean(ctx)
   try:
-    await ctx.send(embed=discord.Embed(description="Are you sure? This will delete all emojis, stickers and roles from this server!", color=0xA4C4FF, view=Clean(ctx))
-    await Clean(ctx).wait()
+    await ctx.send(embed=discord.Embed(description=f"{ctx.author.mention}: Are you sure? This will delete all emojis, stickers and roles from this server!", color=0xA4C4FF, view=c)
+    await c.wait()
     
-    if Clean(ctx).value is True:
+    if c.value is True:
       for emoji in ctx.guild.emojis:
         try:
           await emoji.delete()
@@ -58,7 +59,7 @@ async def clean (ctx):
           await asyncio.sleep(0.2)
         except:
           pass
-  except Asyncio.TimeoutError:
+  except asyncio.TimeoutError:
       await ctx.message.add_reaction("👎")
 
 @bot.command()
@@ -69,9 +70,9 @@ async def serverinfo (ctx):
     embed.set_thumbnail(url=ctx.guild.icon_url)
   embed.add_field(name="Owner: ", value=ctx.guild.owner, inline=True)
   embed.add_field(name="Boosts: ", value=ctx.guild
-  .premium_subscription.count, inline=True)
+  .premium_subscription_count, inline=True)
   embed.add_field(name="Boost Tier: ", value=str(ctx.guild.premium_tier), inline=True)
   embed.add_field(name="Channels: ", value=f"txt: {len(ctx.guild.text_channels)} | voice: {len(ctx.guild.voice_channels)}", inline=False)
-  embed.add_field(name="Roles: ", value='.'.join(ctx.guild.roles.mention), inline=False)
+  embed.add_field(name="Roles: ", value='.'.join([r.mention for r in ctx.guild.roles]), inline=False)
   await ctx.send(embed=embed)
 
