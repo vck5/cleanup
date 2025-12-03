@@ -12,7 +12,7 @@ class Clean(discord.ui.View):
   def __init__(self, ctx):
     super().__init__ (timeout=30.0)
     self.ctx = ctx
-    self.view = None
+    self.value = None
     
   @discord.ui.button(label="Confirm", style=discord.ButtonStyle.danger)
   async def confirm (self, i: discord.Interaction, b: discord.ui.Button):
