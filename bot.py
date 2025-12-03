@@ -7,7 +7,7 @@ bot = commands.Bot(command_prefix='z', intents=discord.Intents.all())
 async def on_ready():
   print(f"[ + ] Logged in as: {bot.user}")
   print(f"[ + ] ID: {bot.user.id}")
-  await bot.change_presence(status=discord.Status.idle, activity=discord.ActivityType.watching("⚖️"))
+  await bot.change_presence(status=discord.Status.idle, activity=discord.Activity(Type=discord.ActivityType.watching, name="⚖️"))
   
 class Clean(discord.ui.View):
   def __init__(self, ctx):
