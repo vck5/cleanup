@@ -7,7 +7,7 @@ bot = commands.Bot(command_prefix='z', intents=discord.Intents.all())
 async def on_ready():
   print(f"[ + ] Logged in as: {bot.user}")
   print(f"[ + ] ID: {bot.user.id}")
-  await bot.change_presence(status=discord.Status.idle, activity=discord.ActivityType.watching("⚖️"))
+  await bot.change_presence(status=discord.Status.idle, activity=discord.ActivityType.watching, name="⚖️")
   
 class Clean(discord.ui.View):
   def __init__(self, ctx):
@@ -38,7 +38,7 @@ class Clean(discord.ui.View):
 async def clean (ctx):
   c = Clean(ctx)
   try:
-    await ctx.reply(embed=discord.Embed(description=f"{ctx.author.mention}: Are you sure? This will delete all emojis, stickers and roles from this server!", color=0xA4C4FF, view=c))
+    await ctx.reply(embed=discord.Embed(description=f"{ctx.author.mention}: Are you sure? This will delete all emojis, stickers and roles from this server!", color=0xA4C4FF, view=c)))
     await c.wait()
     
     if c.value is True:
@@ -84,3 +84,4 @@ async def serverinfo (ctx):
   await ctx.send(embed=embed)
 
 bot.run(token)
+      
