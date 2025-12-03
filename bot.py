@@ -38,7 +38,7 @@ class Clean(discord.ui.View):
 async def clean (ctx):
   c = Clean(ctx)
   try:
-    await ctx.reply(embed=discord.Embed(description=f"{ctx.author.mention}: Are you sure? This will delete all emojis, stickers and roles from this server!", color=0xA4C4FF, view=c)))
+    await ctx.reply(embed=discord.Embed(description=f"{ctx.author.mention}: Are you sure? This will delete all emojis, stickers and roles from this server!", color=0xA4C4FF, view=c))
     await c.wait()
     
     if c.value is True:
